@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="config">
+        <xs:annotation>
+        	<xs:documentation>set ucc config</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="source"/>
+      </xs:sequence>
+      <xs:attribute name="appid" use="required" type="xs:NCName">
+      	<xs:annotation>
+      		<xs:documentation>current app id</xs:documentation>
+      	</xs:annotation></xs:attribute>
+      <xs:attribute name="dataDir" use="required">
+      	<xs:annotation>
+      		<xs:documentation>local directory for cache config file</xs:documentation>
+      	</xs:annotation></xs:attribute>
+      <xs:attribute name="serverHost" use="required" type="xs:NMTOKEN">
+      	<xs:annotation>
+      		<xs:documentation>ucc config server host ip</xs:documentation>
+      	</xs:annotation></xs:attribute>
+      <xs:attribute name="syncInterval" use="required" type="xs:integer">
+      	<xs:annotation>
+      		<xs:documentation>the interval time for getting config file from ucc server</xs:documentation>
+      	</xs:annotation></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="source">
+        <xs:annotation>
+        	<xs:documentation>set config file source path and id</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+      <xs:attribute name="id" use="required" type="xs:NCName">
+      	<xs:annotation>
+      		<xs:documentation>config file source id</xs:documentation>
+      	</xs:annotation></xs:attribute>
+      <xs:attribute name="path" use="required">
+      	<xs:annotation>
+      		<xs:documentation>config file source path</xs:documentation>
+      	</xs:annotation></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

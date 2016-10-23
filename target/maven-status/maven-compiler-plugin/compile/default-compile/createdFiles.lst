@@ -1,0 +1,7 @@
+com\louch2010\ucc\client\Core.class
+com\louch2010\ucc\client\spring\UccBeanDefinitionParser.class
+com\louch2010\ucc\client\spring\UccNamespaceHandler.class
+com\louch2010\ucc\client\Ucc.class
+com\louch2010\ucc\client\constant\Constants.class
+com\louch2010\ucc\client\constant\Constants$ElementDefaultValue.class
+com\louch2010\ucc\client\constant\Constants$Element.class
