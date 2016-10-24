@@ -1,44 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
-  <xs:element name="config">
-        <xs:annotation>
-        	<xs:documentation>set ucc config</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-      <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="source"/>
-      </xs:sequence>
-      <xs:attribute name="appid" use="required" type="xs:NCName">
-      	<xs:annotation>
-      		<xs:documentation>current app id</xs:documentation>
-      	</xs:annotation></xs:attribute>
-      <xs:attribute name="dataDir" use="required">
-      	<xs:annotation>
-      		<xs:documentation>local directory for cache config file</xs:documentation>
-      	</xs:annotation></xs:attribute>
-      <xs:attribute name="serverHost" use="required" type="xs:NMTOKEN">
-      	<xs:annotation>
-      		<xs:documentation>ucc config server host ip</xs:documentation>
-      	</xs:annotation></xs:attribute>
-      <xs:attribute name="syncInterval" use="required" type="xs:integer">
-      	<xs:annotation>
-      		<xs:documentation>the interval time for getting config file from ucc server</xs:documentation>
-      	</xs:annotation></xs:attribute>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="source">
-        <xs:annotation>
-        	<xs:documentation>set config file source path and id</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-      <xs:attribute name="id" use="required" type="xs:NCName">
-      	<xs:annotation>
-      		<xs:documentation>config file source id</xs:documentation>
-      	</xs:annotation></xs:attribute>
-      <xs:attribute name="path" use="required">
-      	<xs:annotation>
-      		<xs:documentation>config file source path</xs:documentation>
-      	</xs:annotation></xs:attribute>
-    </xs:complexType>
-  </xs:element>
-</xs:schema>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.louch2010.com/schema/ucc"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.louch2010.com/schema/ucc">
+
+	<xsd:element name="config">
+		<xsd:complexType>
+			<!-- <xsd:sequence>
+				<xsd:element name="sources" maxOccurs="1" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="source" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+							      <xs:attribute name="path" use="required" type="xsd:string" />
+							    </xs:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence> -->
+			<xsd:attribute name="id" type="xsd:ID"></xsd:attribute>
+			<xsd:attribute name="appId" type="xsd:string" use="required"></xsd:attribute>
+			<xsd:attribute name="serverHost" type="xsd:string" use="required"></xsd:attribute>
+			<xsd:attribute name="cacheDir" type="xsd:string" use="optional"></xsd:attribute>
+			<xsd:attribute name="syncInterval" type="xsd:int" use="optional"></xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>  

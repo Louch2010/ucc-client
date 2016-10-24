@@ -1,17 +1,14 @@
 package com.louch2010.ucc.client.spring;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.factory.xml.BeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
-import com.louch2010.ucc.client.Ucc;
+import com.louch2010.ucc.client.UConfig;
 import com.louch2010.ucc.client.constant.Constants;
 
 /** 
@@ -19,30 +16,24 @@ import com.louch2010.ucc.client.constant.Constants;
   * @author: luocihang
   * @date: 2016年10月22日 下午3:11:20
   * @version: V1.0 
-  * @see：http://www.louch2010.com/schema/ucc.xsd
+  * @see：http://www.louch2010.com/schema/ucc/ucc.xsd
   */
-public class UccBeanDefinitionParser extends AbstractSingleBeanDefinitionParser{
-	@Override
-	protected Class<?> getBeanClass(Element element) {
-		
-		return Ucc.class;
-	}
-	
-	@Override
-	protected void doParse(Element element, ParserContext parserContext,
-			BeanDefinitionBuilder bean) {
-		//设置app id
-		String appId = element.getAttribute(Constants.Element.APP_ID);
+public class UccBeanDefinitionParser implements BeanDefinitionParser{
+
+	public BeanDefinition parse(Element element, ParserContext parserContext) {
+        RootBeanDefinition bean = new RootBeanDefinition();  
+        bean.setBeanClass(UConfig.class);
+        String appId = element.getAttribute(Constants.Element.APP_ID);
 		Assert.hasText(appId, "ucc appId can no be empty");
-		bean.addPropertyValue(Constants.Element.APP_ID, appId);
+		bean.getPropertyValues().addPropertyValue(Constants.Element.APP_ID, appId);
 		//设置server host
 		String serverHost = element.getAttribute(Constants.Element.SERVER_HOST);
 		Assert.hasText(serverHost, "ucc serverHost can no be empty");
-		bean.addPropertyValue(Constants.Element.SERVER_HOST, serverHost);
+		bean.getPropertyValues().addPropertyValue(Constants.Element.SERVER_HOST, serverHost);
 		//设置cache dir
 		String cacheDir = element.getAttribute(Constants.Element.CACHE_DIR);
 		if(StringUtils.hasText(cacheDir)){
-			bean.addPropertyValue(Constants.Element.CACHE_DIR, cacheDir);
+			bean.getPropertyValues().addPropertyValue(Constants.Element.CACHE_DIR, cacheDir);
 		}
 		//设置sync interval
 		String syncInterval = element.getAttribute(Constants.Element.SYNC_INTERVAL);
@@ -53,8 +44,17 @@ public class UccBeanDefinitionParser extends AbstractSingleBeanDefinitionParser{
 			} catch (Exception e) {
 				throw new IllegalArgumentException(e);
 			}
-			bean.addPropertyValue(Constants.Element.SYNC_INTERVAL, interval);
+			bean.getPropertyValues().addPropertyValue(Constants.Element.SYNC_INTERVAL, interval);
 		}
+		//进行注册
+		String id = element.getAttribute("id"); 
+		if(!StringUtils.hasText(id)){
+			id = appId;
+		}
+        parserContext.getRegistry().registerBeanDefinition(id, bean);
+        return bean;
+		//设置app id
+		/*
 		//解析子标签
 		Map<String, String> sources = new HashMap<String, String>();
 		NodeList children = element.getElementsByTagName(Constants.Element.SOURCE);
@@ -69,6 +69,7 @@ public class UccBeanDefinitionParser extends AbstractSingleBeanDefinitionParser{
 			}
 			sources.put(id, path);
 		}
-		bean.addPropertyValue(Constants.Element.SOURCES, sources);
+		bean.addPropertyValue(Constants.Element.SOURCES, sources);*/
 	}
+	
 }

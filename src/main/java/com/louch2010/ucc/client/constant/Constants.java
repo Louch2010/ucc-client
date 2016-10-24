@@ -3,6 +3,7 @@ package com.louch2010.ucc.client.constant;
 public interface Constants {
 	
 	String UCC = "ucc";
+	String CONFIG = "config";
 	
 	/** 
 	  * @Description: 标签

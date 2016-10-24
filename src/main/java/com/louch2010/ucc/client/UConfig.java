@@ -12,7 +12,7 @@ import com.louch2010.ucc.client.constant.Constants;
   * @version: V1.0 
   * @see：
   */
-public class Ucc {
+public class UConfig {
 	private String appId;
 	private String serverHost;
 	private String cacheDir = Constants.ElementDefaultValue.CACHE_DIR;
@@ -59,4 +59,11 @@ public class Ucc {
 		this.sources = sources;
 	}
 
+	@Override
+	public String toString() {
+		return "Ucc [appId=" + appId + ", serverHost=" + serverHost
+				+ ", cacheDir=" + cacheDir + ", syncInterval=" + syncInterval
+				+ ", sources=" + sources + "]";
+	}
+	
 }

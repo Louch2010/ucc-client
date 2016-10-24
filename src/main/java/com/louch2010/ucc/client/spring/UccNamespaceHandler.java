@@ -15,6 +15,6 @@ public class UccNamespaceHandler extends NamespaceHandlerSupport{
 
 	public void init() {
 		UccBeanDefinitionParser parser = new UccBeanDefinitionParser();
-		super.registerBeanDefinitionParser(Constants.UCC, parser);
+		registerBeanDefinitionParser(Constants.CONFIG, parser);
 	}
 }
