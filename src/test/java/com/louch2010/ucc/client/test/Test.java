@@ -6,5 +6,6 @@ public class Test {
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-test.xml");
 		System.out.println(context.getBean("test"));
+		System.out.println(context.getBean(MyConfig.class));
 	}
 }

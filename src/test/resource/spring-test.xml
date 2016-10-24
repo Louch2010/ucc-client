@@ -9,4 +9,5 @@
         http://www.louch2010.com/schema/ucc/ucc.xsd">
           
         <ucc:config appId="test" serverHost="127.0.0.1" cacheDir="/data/ucc" syncInterval="60" />
+        <bean class="com.louch2010.ucc.client.test.MyConfig" />
 </beans>
