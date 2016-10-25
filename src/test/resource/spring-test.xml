@@ -10,4 +10,5 @@
           
         <ucc:config appId="test" serverHost="127.0.0.1" cacheDir="/data/ucc" syncInterval="60" />
         <bean class="com.louch2010.ucc.client.test.MyConfig" />
+        <bean class="com.louch2010.ucc.client.annotation.UConfigInjectHandler" />
 </beans>
