@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,6 +18,19 @@ public class ConfigDataPool {
 	
 	public static void put(String key, String value){
 		dataPool.put(key, value);
+	}
+	
+	/**
+	  *description : 初始化
+	  *@param      : @param files
+	  *@return     : void
+	  *modified    : 1、2016年10月25日 下午7:54:39 由 luocihang 创建 	   
+	 * @throws IOException 
+	  */ 
+	public static void init(List<String> files) throws IOException{
+		for (String file:files) {
+			load(file);
+		}
 	}
 	
 	/**

@@ -12,7 +12,8 @@ public class Test {
 		ConfigDataPool.put("jdbc.connectTimeout", "10000000");
 		ConfigDataPool.put("jdbc.keepAlive", "true");
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-test.xml");
-		System.out.println(context.getBean("test"));
-		System.out.println(context.getBean(MyConfig.class));
+		//System.out.println(context.getBean("test"));
+		//System.out.println(context.getBean(MyConfig.class));
+		context.close();
 	}
 }

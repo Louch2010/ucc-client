@@ -30,6 +30,17 @@ public class UccBeanDefinitionParser implements BeanDefinitionParser{
 		String serverHost = element.getAttribute(Constants.Element.SERVER_HOST);
 		Assert.hasText(serverHost, "ucc serverHost can no be empty");
 		bean.getPropertyValues().addPropertyValue(Constants.Element.SERVER_HOST, serverHost);
+		//设置server port
+		String serverPort = element.getAttribute(Constants.Element.SERVER_PORT);
+		if(StringUtils.hasText(serverPort)){
+			int port = 0;
+			try {
+				port = Integer.parseInt(serverPort);
+			} catch (Exception e) {
+				throw new IllegalArgumentException(e);
+			}
+			bean.getPropertyValues().addPropertyValue(Constants.Element.SERVER_PORT, port);
+		}
 		//设置cache dir
 		String cacheDir = element.getAttribute(Constants.Element.CACHE_DIR);
 		if(StringUtils.hasText(cacheDir)){

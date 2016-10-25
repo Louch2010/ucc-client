@@ -15,6 +15,7 @@ import com.louch2010.ucc.client.constant.Constants;
 public class UConfig {
 	private String appId;
 	private String serverHost;
+	private int serverPort = Constants.ElementDefaultValue.SERVER_PORT;
 	private String cacheDir = Constants.ElementDefaultValue.CACHE_DIR;
 	private int syncInterval = Constants.ElementDefaultValue.SYNC_INTERVAL;
 	private Map<String, String> sources = new HashMap<String, String>();
@@ -59,11 +60,19 @@ public class UConfig {
 		this.sources = sources;
 	}
 
+	public int getServerPort() {
+		return serverPort;
+	}
+
+	public void setServerPort(int serverPort) {
+		this.serverPort = serverPort;
+	}
+
 	@Override
 	public String toString() {
-		return "Ucc [appId=" + appId + ", serverHost=" + serverHost
-				+ ", cacheDir=" + cacheDir + ", syncInterval=" + syncInterval
-				+ ", sources=" + sources + "]";
+		return "UConfig [appId=" + appId + ", serverHost=" + serverHost
+				+ ", serverPort=" + serverPort + ", cacheDir=" + cacheDir
+				+ ", syncInterval=" + syncInterval + ", sources=" + sources
+				+ "]";
 	}
-	
 }
