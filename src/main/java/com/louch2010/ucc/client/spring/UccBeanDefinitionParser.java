@@ -1,5 +1,8 @@
 package com.louch2010.ucc.client.spring;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.BeanDefinitionParser;
@@ -62,6 +65,12 @@ public class UccBeanDefinitionParser implements BeanDefinitionParser{
 		if(!StringUtils.hasText(id)){
 			id = appId;
 		}
+		//配置文件
+		Map<String, String> sources = new HashMap<String, String>();
+		sources.put("/jdbc.properties", "UTF-8");
+		sources.put("/ftp.properties", "UTF-8");
+		bean.getPropertyValues().addPropertyValue(Constants.Element.SOURCES, sources);
+
         parserContext.getRegistry().registerBeanDefinition(id, bean);
         return bean;
 		//设置app id
@@ -82,5 +91,4 @@ public class UccBeanDefinitionParser implements BeanDefinitionParser{
 		}
 		bean.addPropertyValue(Constants.Element.SOURCES, sources);*/
 	}
-	
 }

@@ -47,7 +47,7 @@ public interface Constants {
 	public interface Protocol{
 		String REQ_CONFIG_COMMAND = "gconf://";
 		String REQ_CONFIG_NAME_SPLIT = "-||-";
-		String RESP_CONFIG_START = "<!-||--||--||--||--||--||--||-!>";
+		String RESP_CONFIG_START = "<!-||--||--||--||--||--||--||";
 		String RESP_CONFIG_END = "-||--||--||--||--||--||--||-!>";
 	}
 }

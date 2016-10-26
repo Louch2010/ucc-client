@@ -8,15 +8,43 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 import com.louch2010.ucc.client.constant.Constants;
 
-public class Client {
-	private Log logger = LogFactory.getLog(Client.class);
+@Component
+public class ClientTimerTask extends TimerTask implements ApplicationContextAware{
+	private Log logger = LogFactory.getLog(ClientTimerTask.class);
+	private UConfig config;
+	private Timer timer;
+	
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		this.config = applicationContext.getBean(UConfig.class);
+		timer = new Timer();
+		getConfigDataFromServer(config);
+		timer.schedule(this, config.getSyncInterval() * 1000, config.getSyncInterval() * 1000);
+	}
+	
+	public void stop(){
+		if(timer != null){
+			timer.cancel();
+		}
+	}
+	
+	@Override
+	public void run() {
+		getConfigDataFromServer(config);
+	}
 	
 	public void getConfigDataFromServer(UConfig config){
 		try {
@@ -30,10 +58,14 @@ public class Client {
 			PrintWriter pw = new PrintWriter(socket.getOutputStream());
 			pw.println(command);
 			pw.flush();
+			IOUtils.closeQuietly(pw);
 			//接收请求
 			InputStream input = socket.getInputStream();
+			
 			//解析响应
 			List<String> list = this.parseResponse(input, config.getCacheDir());
+			
+			IOUtils.closeQuietly(input);
 			//初始化配置池
 			ConfigDataPool.init(list);
 		} catch (Exception e) {
@@ -105,4 +137,5 @@ public class Client {
 		}
 		return sb.toString();
 	}
+
 }

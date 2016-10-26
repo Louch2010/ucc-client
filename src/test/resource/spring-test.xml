@@ -12,4 +12,5 @@
         <bean class="com.louch2010.ucc.client.test.MyConfig" />
         <bean id="testAware" class="com.louch2010.ucc.client.test.TestAware" />
         <bean class="com.louch2010.ucc.client.annotation.UConfigInjectHandler" />
+        <bean class="com.louch2010.ucc.client.ClientTimerTask" />
 </beans>
