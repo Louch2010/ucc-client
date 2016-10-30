@@ -7,19 +7,15 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import com.louch2010.ucc.client.ConfigDataPool;
 
 @Component
-public class UConfigInjectHandler implements ApplicationListener<ContextRefreshedEvent>{
-	private ApplicationContext application;
+public class UConfigInjectHandler{
 	private Log logger = LogFactory.getLog(UConfigInjectHandler.class);
 
-	public void onApplicationEvent(ContextRefreshedEvent event) {
-		this.application = event.getApplicationContext();
+	public void doInject(ApplicationContext application) {
 		Map<String, Object> beans = application.getBeansWithAnnotation(UConfigBean.class);
 		for(String name:beans.keySet()){
 			Object obj = beans.get(name);
@@ -27,6 +23,7 @@ public class UConfigInjectHandler implements ApplicationListener<ContextRefreshe
 				logger.debug("inject ucc config bean's field: " + name);
 			}
 			this.inject(obj);
+			System.out.println(obj);
 		}
 	}
 	

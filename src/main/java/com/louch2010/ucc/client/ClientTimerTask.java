@@ -1,8 +1,11 @@
 package com.louch2010.ucc.client;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -19,17 +22,22 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import com.louch2010.ucc.client.annotation.UConfigInjectHandler;
 import com.louch2010.ucc.client.constant.Constants;
 
 @Component
 public class ClientTimerTask extends TimerTask implements ApplicationContextAware{
 	private Log logger = LogFactory.getLog(ClientTimerTask.class);
 	private UConfig config;
+	private UConfigInjectHandler handler;
+	private ApplicationContext application;
 	private Timer timer;
 	
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
+		this.application = applicationContext;
 		this.config = applicationContext.getBean(UConfig.class);
+		this.handler = applicationContext.getBean(UConfigInjectHandler.class);
 		timer = new Timer();
 		getConfigDataFromServer(config);
 		timer.schedule(this, config.getSyncInterval() * 1000, config.getSyncInterval() * 1000);
@@ -54,23 +62,28 @@ public class ClientTimerTask extends TimerTask implements ApplicationContextAwar
 				return;
 			}
 			Socket socket = new Socket(config.getServerHost(), config.getServerPort());
+			OutputStream output = socket.getOutputStream();
+			InputStream input = socket.getInputStream();
 			//发送请求
-			PrintWriter pw = new PrintWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(output);
 			pw.println(command);
 			pw.flush();
-			IOUtils.closeQuietly(pw);
-			//接收请求
-			InputStream input = socket.getInputStream();
-			
+			//IOUtils.closeQuietly(pw);
+			//pw.close();
 			//解析响应
 			List<String> list = this.parseResponse(input, config.getCacheDir());
-			
-			IOUtils.closeQuietly(input);
+			//IOUtils.closeQuietly(input);
+			input.close();
+			//关闭资源
+			socket.close();
 			//初始化配置池
 			ConfigDataPool.init(list);
+			//执行注入
+			handler.doInject(application);
 		} catch (Exception e) {
 			if(logger.isErrorEnabled()){
-				logger.error(e);
+				//logger.error(e);
+				e.printStackTrace();
 			}else{
 				e.printStackTrace();
 			}
@@ -90,8 +103,9 @@ public class ClientTimerTask extends TimerTask implements ApplicationContextAwar
 		String fileName = null;
 		StringBuffer content = null;
 		boolean nextLineIsFileName = false;
-		List<String> lines = IOUtils.readLines(input, "UTF-8");
-		for(String line:lines){
+		BufferedReader br = new BufferedReader(new InputStreamReader(input));
+		String line;
+		while((line = br.readLine()) != null){
 			line = line.trim();
 			if(Constants.Protocol.RESP_CONFIG_START.endsWith(line)){
 				nextLineIsFileName = true;
@@ -103,8 +117,12 @@ public class ClientTimerTask extends TimerTask implements ApplicationContextAwar
 				nextLineIsFileName = false;
 				continue;
 			}
-			if(Constants.Protocol.RESP_CONFIG_START.endsWith(line)){
+			if(Constants.Protocol.RESP_CONFIG_END.endsWith(line)){
 				sources.add(cacheDir + fileName);
+				File dir = new File(cacheDir);
+				if(!dir.exists()){
+					dir.mkdirs();
+				}
 				IOUtils.write(content.toString(), new FileOutputStream(new File(cacheDir + fileName)), "UTF-8");
 			}
 			content.append(line + "\r\n");
