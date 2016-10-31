@@ -79,7 +79,7 @@ public class ClientTimerTask extends TimerTask implements ApplicationContextAwar
 			//初始化配置池
 			ConfigDataPool.init(list);
 			//执行注入
-			handler.doInject(application);
+			handler.inject(application);
 		} catch (Exception e) {
 			if(logger.isErrorEnabled()){
 				//logger.error(e);

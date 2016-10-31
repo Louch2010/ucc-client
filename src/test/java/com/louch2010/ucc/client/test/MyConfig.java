@@ -31,16 +31,8 @@ public class MyConfig {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public int getPort() {
 		return port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
 	}
 
 	public long getConnectTimeout() {
